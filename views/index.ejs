@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Timer</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin-top: 100px;
+      }
+      #timer {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div>Elapsed Time:</div>
+    <div id="timer"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      const timerEl = document.getElementById("timer");
+
+      // const orderId = `ORD-${Math.floor(Math.random() * 1000000)}`
+
+      const orderId = "ORD-552319"
+
+      const  socket = io();
+
+      socket.emit("start-timer", {orderId : orderId , duration : 1* 60 * 1000 } )
+
+      socket.on("timer", (event) => {
+
+        console.log(event);
+        
+        const elapsed = event.remaining;
+
+        const seconds = Math.floor(elapsed / 1000);
+        const min = Math.floor(seconds / 60);
+        const sec = seconds % 60;
+        timerEl.textContent = `${min}:${sec.toString().padStart(2, "0")}`;
+
+      } );
+
+      // socket.onerror = (err) => {
+      //   console.error("WebSocket error:", err);
+      // };
+    </script>
+  </body>
+</html>
