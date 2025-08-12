@@ -63,6 +63,7 @@ io.on("connection", (socket) => {
 // });
 
 // ✅ One server for both
-server.listen(3000, () => {
-  console.log("Server + WebSocket running on http://localhost:3000");
+const PORT = process.env.PORT || 10000; // Render sets PORT
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
