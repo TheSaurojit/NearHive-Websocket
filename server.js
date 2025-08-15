@@ -45,19 +45,21 @@ io.on("connection", (socket) => {
 
   socket.on("delete-timer", ({ orderId }) => {
     if (orderTimers.has(orderId)) {
+      clearInterval(orderTimers.get(orderId).interval);
       orderTimers.delete(orderId);
     }
   });
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");
-    //If you want, loop through timers and clear them
-    // for (let [orderId, { interval }] of orderTimers) {
-    //   clearInterval(interval);
-    //   orderTimers.delete(orderId);
-    // }
   });
 });
+
+//If you want, loop through timers and clear them
+// for (let [orderId, { interval }] of orderTimers) {
+//   clearInterval(interval);
+//   orderTimers.delete(orderId);
+// }
 
 // // EJS rendering logic
 // app.set("view engine", "ejs");
