@@ -43,6 +43,12 @@ io.on("connection", (socket) => {
     console.log(orderTimers, "orderTimers");
   });
 
+  socket.on("delete-timer", ({ orderId }) => {
+    if (orderTimers.has(orderId)) {
+      orderTimers.delete(orderId);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
     //If you want, loop through timers and clear them
