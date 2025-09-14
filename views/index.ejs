@@ -27,11 +27,11 @@
 
       // const orderId = `ORD-${Math.floor(Math.random() * 1000000)}`
 
-      const orderId = "ORD-552319"
+      const orderId = "ORD1C680247"
 
       const  socket = io();
 
-      socket.emit("start-timer", {orderId : orderId , duration : 1* 60 * 1000 } )
+      socket.emit("start-timer", {orderId : orderId , duration : 1* 10 * 1000 } )
 
       socket.on("timer", (event) => {
 

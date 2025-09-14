@@ -2,12 +2,31 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import path from "path";
+import { db } from "./firebase-admin.js";
 
 const app = express();
 const server = createServer(app); // single server
 const io = new Server(server, { cors: { origin: "*" } });
 
 const orderTimers = new Map();
+
+async function updateOrder(orderId) {
+  const ordersSnapshot = await db
+    .collection("Orders")
+    .where("orderId", "==", orderId)
+    .limit(1)
+    .get();
+
+  if (ordersSnapshot.empty) {
+    return;
+  }
+
+  const doc = ordersSnapshot.docs[0];
+
+  await db.collection("Orders").doc(doc.id).update({
+    extendPrepareTime: true,
+  });
+}
 
 io.on("connection", (socket) => {
   console.log("Client connected");
@@ -25,11 +44,13 @@ io.on("connection", (socket) => {
       countdownDuration = duration;
     }
 
-    interval = setInterval(() => {
+    interval = setInterval(async () => {
       const elapsed = Date.now() - startTime;
       const remaining = countdownDuration - elapsed;
 
       if (remaining <= 0) {
+        await updateOrder(orderId);
+
         socket.emit("timer", { orderId, remaining: 0 });
         clearInterval(interval);
         orderTimers.delete(orderId);
@@ -39,8 +60,6 @@ io.on("connection", (socket) => {
     }, 1000);
 
     orderTimers.set(orderId, { startTime, countdownDuration, interval });
-
-    console.log(orderTimers, "orderTimers");
   });
 
   socket.on("delete-timer", ({ orderId }) => {
@@ -61,7 +80,7 @@ io.on("connection", (socket) => {
 //   orderTimers.delete(orderId);
 // }
 
-// // EJS rendering logic
+// // // EJS rendering logic
 // app.set("view engine", "ejs");
 // app.set("views", path.join(process.cwd(), "views")); // safer path
 // app.use(express.static("public")); // if you have static files
