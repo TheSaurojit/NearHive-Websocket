@@ -31,7 +31,11 @@ async function updateOrder(orderId) {
 io.on("connection", (socket) => {
   console.log("Client connected");
 
-  socket.on("start-timer", ({ orderId, duration }) => {
+  socket.on("start-timer", ({ orderId, duration  }) => {
+
+    console.log("\n type \n",orderId , duration);
+    
+
     let startTime, countdownDuration, interval;
 
     if (orderTimers.has(orderId)) {
@@ -81,13 +85,13 @@ io.on("connection", (socket) => {
 // }
 
 // // // EJS rendering logic
-// app.set("view engine", "ejs");
-// app.set("views", path.join(process.cwd(), "views")); // safer path
-// app.use(express.static("public")); // if you have static files
+app.set("view engine", "ejs");
+app.set("views", path.join(process.cwd(), "views")); // safer path
+app.use(express.static("public")); // if you have static files
 
-// app.get("/", (req, res) => {
-//   res.render("index");
-// });
+app.get("/", (req, res) => {
+  res.render("index");
+});
 
 // ✅ One server for both
 const PORT = process.env.PORT || 10000; // Render sets PORT

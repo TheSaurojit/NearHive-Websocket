@@ -31,7 +31,7 @@
 
       const  socket = io();
 
-      socket.emit("start-timer", {orderId : orderId , duration : 1* 10 * 1000 } )
+      socket.emit("start-timer", {orderId : orderId , duration : 10 *  60000 } ) // 60000 = 1 minute
 
       socket.on("timer", (event) => {
 
