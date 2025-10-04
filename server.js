@@ -35,6 +35,9 @@ io.on("connection", (socket) => {
 
     console.log("\n type \n",orderId , duration);
 
+    console.log("\n total orders ", orderTimers.keys());
+
+
     let startTime, countdownDuration, interval;
 
     if (orderTimers.has(orderId)) {
