@@ -34,7 +34,6 @@ io.on("connection", (socket) => {
   socket.on("start-timer", ({ orderId, duration  }) => {
 
     console.log("\n type \n",orderId , duration);
-    
 
     let startTime, countdownDuration, interval;
 
@@ -42,10 +41,16 @@ io.on("connection", (socket) => {
       // Get existing timer
       ({ startTime, countdownDuration, interval } = orderTimers.get(orderId));
       clearInterval(interval); // prevent duplicate intervals
+
+      console.log("\ninside has timer");
+      
+
     } else {
       // Create new timer
       startTime = Date.now();
       countdownDuration = duration;
+      console.log("\ninside new  timer");
+    
     }
 
     interval = setInterval(async () => {
@@ -96,5 +101,5 @@ app.get("/", (req, res) => {
 // ✅ One server for both
 const PORT = process.env.PORT || 10000; // Render sets PORT
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port http://localhost:${PORT}`);
 });
