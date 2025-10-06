@@ -44,14 +44,14 @@ io.on("connection", (socket) => {
       ({ startTime, countdownDuration, interval } = orderTimers.get(orderId));
       clearInterval(interval); // prevent duplicate intervals
 
-      console.log(`\n Order already exists ${orderId} time --> ${interval}`);
+      console.log(`\n Order already exists ${orderId} time --> ${duration}`);
       
 
     } else {
       // Create new timer
       startTime = Date.now();
       countdownDuration = duration;
-      console.log(`\n New order created ${orderId} time --> ${interval}`);
+      console.log(`\n New order created ${orderId} time --> ${duration}`);
     
     }
 
