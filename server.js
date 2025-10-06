@@ -33,9 +33,8 @@ io.on("connection", (socket) => {
 
   socket.on("start-timer", ({ orderId, duration  }) => {
 
-    console.log("\n type \n",orderId , duration);
 
-    console.log("\n total orders ", orderTimers.keys());
+    console.log("\n Total orders ", orderTimers.keys());
 
 
     let startTime, countdownDuration, interval;
@@ -45,14 +44,14 @@ io.on("connection", (socket) => {
       ({ startTime, countdownDuration, interval } = orderTimers.get(orderId));
       clearInterval(interval); // prevent duplicate intervals
 
-      console.log("\ninside has timer");
+      console.log(`\n Order already exists ${orderId} time --> ${interval}`);
       
 
     } else {
       // Create new timer
       startTime = Date.now();
       countdownDuration = duration;
-      console.log("\ninside new  timer");
+      console.log(`\n New order created ${orderId} time --> ${interval}`);
     
     }
 
@@ -93,13 +92,13 @@ io.on("connection", (socket) => {
 // }
 
 // // // EJS rendering logic
-app.set("view engine", "ejs");
-app.set("views", path.join(process.cwd(), "views")); // safer path
-app.use(express.static("public")); // if you have static files
+// app.set("view engine", "ejs");
+// app.set("views", path.join(process.cwd(), "views")); // safer path
+// app.use(express.static("public")); // if you have static files
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
+// app.get("/", (req, res) => {
+//   res.render("index");
+// });
 
 // ✅ One server for both
 const PORT = process.env.PORT || 10000; // Render sets PORT
